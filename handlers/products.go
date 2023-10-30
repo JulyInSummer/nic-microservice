@@ -1,19 +1,3 @@
-// Package classification of Product API
-//
-// Documentation for Product API
-//
-//	Schemes: http
-//	Host: localhost:9090
-//	BasePath: /
-//	Version: 1.0.0
-//
-//	Consumes:
-//	- application/json
-//
-//	Produces:
-//	- application/json
-//
-// swagger:meta
 package handlers
 
 import (
@@ -22,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"nj_microservices/data"
+	"nic-microservices/data"
 )
 
 // Used for extracting a value from context
@@ -35,6 +19,7 @@ type Products struct {
 func NewProducts(l *log.Logger) *Products {
 	return &Products{l}
 }
+
 
 func (p *Products) MiddlewareProductValidation(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {

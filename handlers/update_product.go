@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"nj_microservices/data"
+	"nic-microservices/data"
 )
 
 func (p *Products) UpdateProduct(rw http.ResponseWriter, r *http.Request) {

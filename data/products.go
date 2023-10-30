@@ -14,11 +14,37 @@ type Products []*Product
 
 var ErrProductNotFound = fmt.Errorf("no product matching this ID")
 
+// Product defines the structure for an API product
+// swagger:model
 type Product struct {
+	// id for this product
+	//
+	// required: true
+	// min: 1
 	ID          int     `json:"id"`
+
+	// the name for this product
+	//
+	// required: true
+	// max length: 255
 	Name        string  `json:"name" validate:"required"`
+
+	// the description for this product
+	//
+	// required: true
+	// max length: 1000
 	Description string  `json:"description"`
+
+	// the price for this product
+	//
+	// required: true
+	// min: 0.1
 	Price       float32 `json:"price" validate:"gt=0"`
+
+	// the SKU for this product
+	//
+	// required: true
+	// pattern: [a-z]+-[a-z]+-[a-z]+
 	SKU         string  `json:"sku" validate:"required,sku"`
 	CreatedOn   string  `json:"-"`
 	UpdatedOn   string  `json:"-"`
@@ -27,7 +53,7 @@ type Product struct {
 
 // A list of products return in the response
 // swagger:response productsResponse
-type productsResponse struct {
+type productsResponseWrapper struct {
 	// All the products in the system
 	// in: body
 	Body []Product
@@ -67,6 +93,16 @@ func UpdateProduct(id int, product *Product) error {
 	product.ID = id
 	productList[pos] = product
 	return nil
+}
+
+func DeleteProduct(id int) error {
+	for pos, product := range productList {
+		if product.ID == id {
+			productList = append(productList[:pos], productList[pos+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("Couldn't delete product with id:", id)
 }
 
 func findProduct(id int) (*Product, int, error) {
